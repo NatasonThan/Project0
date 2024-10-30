@@ -821,7 +821,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8045336f143c70d418f2c3cd37428d3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 6313456441930186668, guid: 18dbe9d9af908624c81b98aa23b97fcb, type: 3}
+  prefabs:
+  - {fileID: 6313456441930186668, guid: 18dbe9d9af908624c81b98aa23b97fcb, type: 3}
+  - {fileID: 6313456441930186668, guid: ccb1811e5aa1b304fb58ac608c3020fb, type: 3}
   spawnRate: 5
   minHeight: -2
   maxHeight: 2

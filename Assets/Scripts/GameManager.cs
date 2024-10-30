@@ -8,6 +8,11 @@ public class GameManager : MonoBehaviour
     public GameObject playButton;
     public GameObject gameOver;
     public int score;
+    public int Score
+    {
+        get { return score; }
+    }
+
 
     private void Awake()
     {
@@ -53,6 +58,12 @@ public class GameManager : MonoBehaviour
     public void IncreaseScore()
     {
         score++;
+        scoreText.text = score.ToString();
+    }
+
+    public void AddScore(int amount)
+    {
+        score += amount;
         scoreText.text = score.ToString();
     }
 

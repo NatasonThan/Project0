@@ -1,10 +1,10 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FoodSpawn : MonoBehaviour
 {
-    public GameObject prefab;
+    public List<GameObject> prefabs;
     public float spawnRate;
     public float minHeight;
     public float maxHeight;
@@ -13,13 +13,17 @@ public class FoodSpawn : MonoBehaviour
     {
         InvokeRepeating(nameof(Spawn), spawnRate, spawnRate);
     }
+
     private void OnDisable()
     {
         CancelInvoke(nameof(Spawn));
     }
+
     private void Spawn()
     {
-        GameObject pipes = Instantiate(prefab, transform.position, Quaternion.identity);
-        pipes.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+        int index = Random.Range(0, prefabs.Count);
+        GameObject prefab = prefabs[index];
+        GameObject instance = Instantiate(prefab, transform.position, Quaternion.identity);
+        instance.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
     }
 }
