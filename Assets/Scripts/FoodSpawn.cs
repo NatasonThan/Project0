@@ -24,6 +24,6 @@ public class FoodSpawn : MonoBehaviour
         int index = Random.Range(0, prefabs.Count);
         GameObject prefab = prefabs[index];
         GameObject instance = Instantiate(prefab, transform.position, Quaternion.identity);
-        instance.transform.position += Vector3.up * Random.Range(minHeight, maxHeight);
+        instance.transform.position += new Vector3(5,Random.Range(minHeight,maxHeight),0);
     }
 }

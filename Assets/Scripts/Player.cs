@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -9,6 +12,9 @@ public class Player : MonoBehaviour
     public float strength = 5f;
     public float gravity = -9.81f;
     private Vector3 direction;
+
+    public GraphicRaycaster raycaster;
+    public EventSystem eventSystem;
 
     private void Awake()
     {
@@ -31,7 +37,13 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0)) {
+        bool isDesktopInput = Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0);
+        bool isTouchInput = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
+
+        bool isTouchingUI = IsPointerOverUI();
+
+        if ((isDesktopInput || isTouchInput) && !isTouchingUI)
+        {
             direction = Vector3.up * strength;
         }
 
@@ -39,11 +51,31 @@ public class Player : MonoBehaviour
         transform.position += direction * Time.deltaTime;
     }
 
+    private bool IsPointerOverUI()
+    {
+        PointerEventData pointerData = new PointerEventData(eventSystem);
+
+        if (Input.touchCount > 0)
+        {
+            pointerData.position = Input.GetTouch(0).position;
+        }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            pointerData.position = Input.mousePosition;
+        }
+
+        List<RaycastResult> results = new List<RaycastResult>();
+        raycaster.Raycast(pointerData, results);
+
+        return results.Count > 0;
+    }
+
     private void AnimateSprite()
     {
         spriteIndex++;
 
-        if (spriteIndex >= sprites.Length) {
+        if (spriteIndex >= sprites.Length) 
+        {
             spriteIndex = 0;
         }
 
@@ -52,9 +84,12 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Obstacle") {
+        if (other.gameObject.tag == "Obstacle") 
+        {
             FindObjectOfType<GameManager>().GameOver();
-        } else if (other.gameObject.tag == "Scoring") {
+        } 
+        else if (other.gameObject.tag == "Scoring") 
+        {
             FindObjectOfType<GameManager>().IncreaseScore();
         }
     }
