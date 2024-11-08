@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public GraphicRaycaster raycaster;
     public EventSystem eventSystem;
 
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();

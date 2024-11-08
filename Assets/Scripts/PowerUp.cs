@@ -6,20 +6,6 @@ using UnityEngine.SocialPlatforms.Impl;
 
 public class PowerUp : MonoBehaviour
 {
-    [SerializeField]
-    public float eat;
-    public float reduceSpeed;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player")) 
@@ -28,7 +14,7 @@ public class PowerUp : MonoBehaviour
         }
     }
     
-    void Pickup(Collider2D player) //Power Up ตรงนี้
+    void Pickup(Collider2D player)
     {
         GameManager gameManager = FindObjectOfType<GameManager>();
         Player stats = player.GetComponent<Player>();
@@ -41,9 +27,9 @@ public class PowerUp : MonoBehaviour
         {
             gameManager.AddScore(5);
         }
-        else
+        else if (gameObject.CompareTag("Bomb"))
         {
-
+            gameManager.RemoveScore(5);
         }
         Destroy(gameObject);
     }

@@ -88,6 +88,12 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
+    public void RemoveScore(int amount) 
+    {
+        score -= amount;
+        scoreText.text = score.ToString();
+    }
+
     public void Revive() 
     {
         if (score >= reviveScore)
@@ -100,6 +106,7 @@ public class GameManager : MonoBehaviour
             playButton.SetActive(false);
             gameOver.SetActive(false);
             reviveButton.SetActive(false);
+            gamePaused.SetActive(true);
 
             Velocity[] pipes = FindObjectsOfType<Velocity>();
 
