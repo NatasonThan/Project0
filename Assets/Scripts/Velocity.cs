@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Velocity : MonoBehaviour
 {
     public float speed = 5f;
+    public float targetSpeed;
     private float leftEdge;
     private GameManager score;
 
@@ -17,6 +19,7 @@ public class Velocity : MonoBehaviour
 
     private void Update()
     {
+        AdjustSpeedByScore();
         transform.position += Vector3.left * speed * Time.deltaTime;
 
         if (transform.position.x < leftEdge) 
@@ -24,10 +27,20 @@ public class Velocity : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (score.score >= 25) 
+    }
+    private void AdjustSpeedByScore()
+    {
+        if (score.score >= 100)
         {
-            speed = 6f;
+            speed = 7f + targetSpeed;
+        }
+        else if (score.score >= 50)
+        {
+            speed = 6.5f + targetSpeed;
+        }
+        else if (score.score >= 25)
+        {
+            speed = 6f + targetSpeed;
         }
     }
-
 }
