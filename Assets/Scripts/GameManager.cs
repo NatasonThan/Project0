@@ -11,23 +11,24 @@ public class GameManager : MonoBehaviour
     public GameObject gameOver;
     public GameObject gamePaused;
     public GameObject reviveButton;
+    public GameObject nameSystem;
     public TextMeshProUGUI requiredText;
+
     private Timer timer;
     public int score;
+    [SerializeField] private int highestScore;
+    private int highestTime;
     private int deathTime = 0;
     private int reviveScore = 0;
 
-    public int Score
-    {
-        get { return score; }
-    }
-
+    public FireBaseRankingManager fireBaseRankingManager;
 
     private void Awake()
     {
         timer = FindObjectOfType<Timer>();
         Application.targetFrameRate = 60;
 
+        highestScore = PlayerPrefs.GetInt("HighestScore", 0);
         Pause();
     }
 
@@ -48,7 +49,7 @@ public class GameManager : MonoBehaviour
 
         Velocity[] pipes = FindObjectsOfType<Velocity>();
 
-        for (int i = 0; i < pipes.Length; i++) 
+        for (int i = 0; i < pipes.Length; i++)
         {
             Destroy(pipes[i].gameObject);
         }
@@ -60,15 +61,44 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(true);
         gamePaused.SetActive(false);
         reviveButton.SetActive(true);
-        player.transform.localScale = new Vector3 (3, 3, 3);
+        player.transform.localScale = new Vector3(3, 3, 3);
         deathTime++;
 
         reviveScore = deathTime * 10;
         requiredText.text = $"Need Score {reviveScore} to Revive";
         Debug.Log($"You Need Score: {reviveScore}");
 
+        if (score > highestScore)
+        {
+            highestScore = score;
+            PlayerPrefs.SetInt("HighestScore", highestScore);
+            PlayerPrefs.Save();
+
+            SubmitScoreToLeaderboard(timer.ElapsedTime);
+        }
+        else
+        {
+            Debug.Log("Score is not high enough to submit to the leaderboard.");
+        }
+
         Pause();
     }
+
+    private void SubmitScoreToLeaderboard(int time)
+    {
+        if (fireBaseRankingManager != null)
+        {
+            string playerName = PlayerPrefs.GetString("PlayerName", "Guest");
+            PlayerData newPlayerData = new PlayerData(0, playerName, highestScore, time);
+            fireBaseRankingManager.currentPlayerData = newPlayerData;
+            fireBaseRankingManager.AddDataWithSorting();
+        }
+        else
+        {
+            Debug.LogError("FireBaseRankingManager is not set in the GameManager");
+        }
+    }
+
 
     public void Pause()
     {
@@ -88,13 +118,13 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
     }
 
-    public void RemoveScore(int amount) 
+    public void RemoveScore(int amount)
     {
         score -= amount;
         scoreText.text = score.ToString();
     }
 
-    public void Revive() 
+    public void Revive()
     {
         if (score >= reviveScore)
         {
@@ -115,11 +145,10 @@ public class GameManager : MonoBehaviour
                 Destroy(pipes[i].gameObject);
             }
         }
-        else 
+        else
         {
             requiredText.text = $"Your Score Is Not Enough";
             Debug.Log("Your Score Is Not Enough");
         }
     }
-
 }

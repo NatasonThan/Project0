@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     public GraphicRaycaster raycaster;
     public EventSystem eventSystem;
 
+    public bool isReviving = false;
 
     private void Awake()
     {
@@ -38,6 +39,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (isReviving) return;
+
         bool isDesktopInput = Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0);
         bool isTouchInput = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
 
@@ -94,5 +97,4 @@ public class Player : MonoBehaviour
             FindObjectOfType<GameManager>().IncreaseScore();
         }
     }
-
 }
