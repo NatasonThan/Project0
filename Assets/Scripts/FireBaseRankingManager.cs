@@ -156,6 +156,7 @@ public class FireBaseRankingManager : MonoBehaviour
             .FirstOrDefault(data => data.playerName == currentPlayerData.playerName);
         rankUIManager.youRankData.UpdateData();
     }
+
     [ContextMenu("Set Local Data to Database")]
     public void SetLocalDataToDatabase() 
     {

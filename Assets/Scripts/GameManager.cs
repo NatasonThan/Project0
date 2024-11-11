@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private Timer timer;
     public int score;
     [SerializeField] private int highestScore;
-    private int highestTime;
+    [SerializeField] private int dataTime;
     private int deathTime = 0;
     private int reviveScore = 0;
 
@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         highestScore = PlayerPrefs.GetInt("HighestScore", 0);
+        dataTime = (int)PlayerPrefs.GetFloat("DataTime", 0f);
         Pause();
     }
 
@@ -74,6 +75,10 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("HighestScore", highestScore);
             PlayerPrefs.Save();
 
+            dataTime = timer.ElapsedTime;
+            PlayerPrefs.SetFloat("DataTime", dataTime);
+            PlayerPrefs.Save();
+
             SubmitScoreToLeaderboard(timer.ElapsedTime);
         }
         else
@@ -98,8 +103,14 @@ public class GameManager : MonoBehaviour
             Debug.LogError("FireBaseRankingManager is not set in the GameManager");
         }
     }
-
-
+    public void FindYourRank() 
+    {
+        Debug.Log($"DataTime: {dataTime}");
+        string playerName = PlayerPrefs.GetString("PlayerName", "Guest");
+        PlayerData newPlayerData = new PlayerData(0, playerName, highestScore, dataTime);
+        fireBaseRankingManager.currentPlayerData = newPlayerData;
+        fireBaseRankingManager.AddDataWithSorting();
+    }
     public void Pause()
     {
         Time.timeScale = 0f;
