@@ -33,7 +33,7 @@ public class RankUIManager : MonoBehaviour
         }
     }
 
-    private void ClearRankData()
+    public void ClearRankData()
     {
         foreach (GameObject createdData in createdPlayerDatas)
         {
@@ -42,7 +42,7 @@ public class RankUIManager : MonoBehaviour
         createdPlayerDatas.Clear();
     }
 
-    private void SortRankData()
+    public void SortRankData()
     {
         List<PlayerData> sortRankPlayer = playerDatas.OrderByDescending(data => data.playerScore).ToList();
         for (int i = 0; i < sortRankPlayer.Count; i++)
@@ -53,6 +53,22 @@ public class RankUIManager : MonoBehaviour
         }
         playerDatas = sortRankPlayer;
     }
+
+    public void SortTimeRankData()
+    {
+        List<PlayerData> sortRankPlayer = playerDatas
+            .OrderByDescending(data => data.playerTime)
+            .ToList();
+
+        for (int i = 0; i < sortRankPlayer.Count; i++)
+        {
+            PlayerData changeRankNum = sortRankPlayer[i];
+            changeRankNum.rankNumber = i + 1;
+            sortRankPlayer[i] = changeRankNum;
+        }
+        playerDatas = sortRankPlayer;
+    }
+
 
     [ContextMenu("Reload")]
     public void ReloadRankData()

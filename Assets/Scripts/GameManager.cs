@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     }
     public void FindYourRank() 
     {
-        Debug.Log($"DataTime: {dataTime}");
+        Debug.Log($"DataTime: {dataTime}");                                                                         
         string playerName = PlayerPrefs.GetString("PlayerName", "Guest");
         PlayerData newPlayerData = new PlayerData(0, playerName, highestScore, dataTime);
         fireBaseRankingManager.currentPlayerData = newPlayerData;

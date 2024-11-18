@@ -135,7 +135,7 @@ public class FireBaseRankingManager : MonoBehaviour
     {
         
     }
-    private void CalculateRankFromScore()
+    public void CalculateRankFromScore()
     {
         List<PlayerData> sortRankPlayer = new List<PlayerData>();
         sortRankPlayer = ranking.playerDatas.OrderByDescending(data => data.playerScore).ToList();
@@ -145,6 +145,22 @@ public class FireBaseRankingManager : MonoBehaviour
             PlayerData changeRankNum = sortRankPlayer[i];
             changeRankNum.rankNumber = i + 1;
 
+            sortRankPlayer[i] = changeRankNum;
+        }
+
+        ranking.playerDatas = sortRankPlayer;
+    }
+
+    public void CalculateRankFromTime()
+    {
+        List<PlayerData> sortRankPlayer = ranking.playerDatas
+            .OrderByDescending(data => data.playerTime)
+            .ToList();
+
+        for (int i = 0; i < sortRankPlayer.Count; i++)
+        {
+            PlayerData changeRankNum = sortRankPlayer[i];
+            changeRankNum.rankNumber = i + 1;
             sortRankPlayer[i] = changeRankNum;
         }
 
@@ -189,7 +205,7 @@ public class FireBaseRankingManager : MonoBehaviour
                     jsonNode[i]["playerTime"]  
                 ));
             }
-            CalculateRankFromScore();
+            CalculateRankFromTime();
 
             string urlPlayerData = $"{url}/ranking/.json?auth={secret}";
 
@@ -244,7 +260,7 @@ public class FireBaseRankingManager : MonoBehaviour
                 ranking.playerDatas.Add(currentPlayerData);
             }
 
-            CalculateRankFromScore();
+            CalculateRankFromTime();
 
             string urlPlayerData = $"{url}/ranking/.json?auth={secret}";
             RestClient.Put<Ranking>(urlPlayerData, ranking).Then(response =>
