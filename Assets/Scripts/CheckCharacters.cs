@@ -27,6 +27,7 @@ public class CheckCharacters : MonoBehaviour
         else
         {
             Debug.LogWarning("No character selected.");
+            characterObjects[0].SetActive(true);
         }
     }
 }

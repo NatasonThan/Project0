@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Velocity : MonoBehaviour
@@ -22,12 +23,17 @@ public class Velocity : MonoBehaviour
         AdjustSpeedByScore();
         transform.position += Vector3.left * speed * Time.deltaTime;
 
-        if (transform.position.x < leftEdge) 
+        if (transform.position.x < leftEdge)
         {
-            Destroy(gameObject);
+            StartCoroutine(DestroyAfterDelay());
         }
-
     }
+    private IEnumerator DestroyAfterDelay()
+    {
+        yield return new WaitForSeconds(2f);
+        Destroy(gameObject);                 
+    }
+
     private void AdjustSpeedByScore()
     {
         if (score.score >= 100)

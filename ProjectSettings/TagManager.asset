@@ -10,6 +10,8 @@ TagManager:
   - Fish
   - Shield
   - Magnet
+  - Bomb
+  - Ground
   layers:
   - Default
   - TransparentFX

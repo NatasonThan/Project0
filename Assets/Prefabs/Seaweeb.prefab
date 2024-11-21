@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7061996593622780047}
   - component: {fileID: -3952642172134243196}
   - component: {fileID: -2138748154452784717}
-  - component: {fileID: -7462127922154321789}
   m_Layer: 0
   m_Name: Seaweeb
   m_TagString: Seaweed
@@ -973,15 +972,3 @@ PolygonCollider2D:
       - {x: 3.04, y: -9.889999}
       - {x: 3.1499999, y: -9.86}
   m_UseDelaunayMesh: 0
---- !u!114 &-7462127922154321789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6313456441930186668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 821235a7a37a6e44b88fcf39bafb628f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -5,7 +5,7 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public Player player;
+    public Player[] player;
     public Text scoreText;
     public GameObject playButton;
     public GameObject gameOver;
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     private Timer timer;
     public int score;
     [SerializeField] private int highestScore;
-    [SerializeField] private int dataTime;
+    [SerializeField] private int scoreTime;
     private int deathTime = 0;
     private int reviveScore = 0;
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = 60;
 
         highestScore = PlayerPrefs.GetInt("HighestScore", 0);
-        dataTime = (int)PlayerPrefs.GetFloat("DataTime", 0f);
+        scoreTime = (int)PlayerPrefs.GetFloat("DataTime", 0f);
         Pause();
     }
 
@@ -46,7 +46,10 @@ public class GameManager : MonoBehaviour
         deathTime = 0;
 
         Time.timeScale = 1f;
-        player.enabled = true;
+        foreach (Player p in player) 
+        {
+            p.enabled = true;
+        }
 
         Velocity[] pipes = FindObjectsOfType<Velocity>();
 
@@ -62,7 +65,6 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(true);
         gamePaused.SetActive(false);
         reviveButton.SetActive(true);
-        player.transform.localScale = new Vector3(3, 3, 3);
         deathTime++;
 
         reviveScore = deathTime * 10;
@@ -75,8 +77,8 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("HighestScore", highestScore);
             PlayerPrefs.Save();
 
-            dataTime = timer.ElapsedTime;
-            PlayerPrefs.SetFloat("DataTime", dataTime);
+            scoreTime = timer.ElapsedTime;
+            PlayerPrefs.SetFloat("DataTime", scoreTime);
             PlayerPrefs.Save();
 
             SubmitScoreToLeaderboard(timer.ElapsedTime);
@@ -105,16 +107,19 @@ public class GameManager : MonoBehaviour
     }
     public void FindYourRank() 
     {
-        Debug.Log($"DataTime: {dataTime}");                                                                         
+        Debug.Log($"DataTime: {scoreTime}");                                                                         
         string playerName = PlayerPrefs.GetString("PlayerName", "Guest");
-        PlayerData newPlayerData = new PlayerData(0, playerName, highestScore, dataTime);
+        PlayerData newPlayerData = new PlayerData(0, playerName, highestScore, scoreTime);
         fireBaseRankingManager.currentPlayerData = newPlayerData;
         fireBaseRankingManager.AddDataWithSorting();
     }
     public void Pause()
     {
         Time.timeScale = 0f;
-        player.enabled = false;
+        foreach (Player p in player)
+        {
+            p.enabled = false;
+        }
     }
 
     public void IncreaseScore()
@@ -140,7 +145,10 @@ public class GameManager : MonoBehaviour
         if (score >= reviveScore)
         {
             Time.timeScale = 1f;
-            player.enabled = true;
+            foreach (Player p in player)
+            {
+                p.enabled = true;
+            }
             score -= reviveScore;
             scoreText.text = score.ToString();
 

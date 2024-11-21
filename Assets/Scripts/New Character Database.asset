@@ -17,3 +17,7 @@ MonoBehaviour:
     characterSprite: {fileID: 1467347198, guid: 2eb03425bdfcd054c996018ff3a247c7, type: 3}
   - characterName: C2
     characterSprite: {fileID: -102146780, guid: 20c3bdb8c15c3c3468f46ee9fd779a9b, type: 3}
+  - characterName: C3
+    characterSprite: {fileID: -2008149668, guid: c9111a0b831a39045835e79422ff207a, type: 3}
+  - characterName: C4
+    characterSprite: {fileID: -236969875, guid: 30b57e4411d84f546b356d67cab94f97, type: 3}

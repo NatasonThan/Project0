@@ -69,6 +69,56 @@ public class RankUIManager : MonoBehaviour
         playerDatas = sortRankPlayer;
     }
 
+    public void BubbleSortScoreRankData()
+    {
+        for (int i = 0; i < playerDatas.Count - 1; i++)
+        {
+            for (int j = 0; j < playerDatas.Count - 1 - i; j++)
+            {
+                if (playerDatas[j].playerScore < playerDatas[j + 1].playerScore)
+                {
+                    PlayerData temp = playerDatas[j];
+                    playerDatas[j] = playerDatas[j + 1];
+                    playerDatas[j + 1] = temp;
+                }
+            }
+        }
+
+        for (int i = 0; i < playerDatas.Count; i++)
+        {
+
+            PlayerData changeRankNum = playerDatas[i];
+            changeRankNum.rankNumber = i + 1; 
+            playerDatas[i] = changeRankNum;
+        }
+    }
+
+    public void BubbleSortTimeRankData()
+    {
+
+        for (int i = 0; i < playerDatas.Count - 1; i++)
+        {
+            for (int j = 0; j < playerDatas.Count - 1 - i; j++)
+            {
+
+                if (playerDatas[j].playerTime < playerDatas[j + 1].playerTime)
+                {
+
+                    PlayerData temp = playerDatas[j];
+                    playerDatas[j] = playerDatas[j + 1];
+                    playerDatas[j + 1] = temp;
+                }
+            }
+        }
+
+        for (int i = 0; i < playerDatas.Count; i++)
+        {
+
+            PlayerData changeRankNum = playerDatas[i];
+            changeRankNum.rankNumber = i + 1;
+            playerDatas[i] = changeRankNum;
+        }
+    }
 
     [ContextMenu("Reload")]
     public void ReloadRankData()

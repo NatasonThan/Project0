@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
     public Sprite[] sprites;
     private int spriteIndex;
 
-    public float strength = 5f;
-    public float gravity = -9.81f;
+    private float strength = 5f;
+    private float gravity = -15f;
     private Vector3 direction;
 
     public GraphicRaycaster raycaster;
@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
 
     public bool isReviving = false;
 
-    public Color safeColor = Color.green; // สีเมื่อชนได้
+    public Color safeColor = Color.green;
     private Color originalColor;
 
     public float magnetRadius = 5f; // รัศมี Magnet
@@ -47,19 +47,21 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+
         if (isReviving) return;
 
-        bool isDesktopInput = Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0);
-        bool isTouchInput = Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began;
-
+        bool isHoldingKey = Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0);
         bool isTouchingUI = IsPointerOverUI();
 
-        if ((isDesktopInput || isTouchInput) && !isTouchingUI)
+        if (isHoldingKey && !isTouchingUI)
         {
             direction = Vector3.up * strength;
         }
+        else 
+        {
+            direction.y += gravity * Time.deltaTime;
+        }
 
-        direction.y += gravity * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
 
         if (isMagnetActive)
@@ -117,6 +119,8 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+
         if (other.gameObject.tag == "Obstacle")
         {
             if (!canCollideSafely) // ถ้ายังไม่มีสถานะชนได้ -> จบเกม
@@ -126,17 +130,40 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.tag == "Scoring") 
         {
-            FindObjectOfType<GameManager>().IncreaseScore();
+            gameManager.IncreaseScore();
         }
         else if (other.gameObject.tag == "Shield") // เมื่อชนอาหารที่เป็นเกราะ
         {
             EnableSafeCollision(); // เปิดสถานะชนได้
-            Destroy(other.gameObject); // ลบอาหารออก
+            Destroy(other.gameObject); // ลบ item เกราะ ออก
         }
         else if (other.gameObject.tag == "Magnet") // เมื่อชนไอเทม Magnet
         {
             ActivateMagnet(); // เปิดใช้งาน Magnet
             Destroy(other.gameObject); // ลบไอเทม Magnet ออก
+        }
+        else if (other.gameObject.tag == "Fish")
+        {
+            gameManager.AddScore(2);
+            Destroy(other.gameObject);
+        }
+        else if (other.gameObject.tag == "Seaweed")
+        {
+            gameManager.AddScore(5);
+            Destroy(other.gameObject);
+        }
+        else if (other.gameObject.tag == "Bomb")
+        {
+            if (!canCollideSafely)
+            {
+                gameManager.RemoveScore(5);
+                Destroy(other.gameObject);
+            }
+        }
+        else if (other.gameObject.tag == "Ground")
+        {
+            gameManager.GameOver();
+            return;
         }
     }
 

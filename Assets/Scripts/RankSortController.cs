@@ -16,7 +16,7 @@ public class RankSortController : MonoBehaviour
         fireBaseRankingManager.CalculateRankFromScore();
         fireBaseRankingManager.SetLocalDataToDatabase();
         rankUIManager.ClearRankData();
-        rankUIManager.SortRankData();
+        rankUIManager.BubbleSortScoreRankData();
         rankUIManager.CreateRankData();
     }   
 
@@ -27,7 +27,7 @@ public class RankSortController : MonoBehaviour
         fireBaseRankingManager.CalculateRankFromTime();
         fireBaseRankingManager.SetLocalDataToDatabase();
         rankUIManager.ClearRankData();
-        rankUIManager.SortTimeRankData();
+        rankUIManager.BubbleSortTimeRankData();
         rankUIManager.CreateRankData();
     }
 }
