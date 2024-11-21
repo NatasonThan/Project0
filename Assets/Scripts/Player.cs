@@ -18,9 +18,17 @@ public class Player : MonoBehaviour
 
     public bool isReviving = false;
 
+    public Color safeColor = Color.green; // สีเมื่อชนได้
+    private Color originalColor;
+
+    public float magnetRadius = 5f; // รัศมี Magnet
+    public float magnetDuration = 5f; // ระยะเวลา Magnet ทำงาน
+    private bool isMagnetActive = false; // สถานะ Magnet
+
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 
     private void Start()
@@ -53,6 +61,11 @@ public class Player : MonoBehaviour
 
         direction.y += gravity * Time.deltaTime;
         transform.position += direction * Time.deltaTime;
+
+        if (isMagnetActive)
+        {
+            AttractFoodItems(); // เรียกฟังก์ชันดูดไอเทมเมื่อ Magnet ทำงาน
+        }
     }
 
     private bool IsPointerOverUI()
@@ -86,15 +99,81 @@ public class Player : MonoBehaviour
         spriteRenderer.sprite = sprites[spriteIndex];
     }
 
+    public bool canCollideSafely = false;
+    public float safeDuration = 5f;
+
+    public void EnableSafeCollision()
+    {
+        canCollideSafely = true;
+        Invoke(nameof(DisableSafeCollision), safeDuration);
+        spriteRenderer.color = safeColor; // เปลี่ยนสีตัวละคร
+    }
+
+    private void DisableSafeCollision()
+    {
+        canCollideSafely = false;
+        spriteRenderer.color = originalColor; // คืนสีเดิม
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Obstacle") 
+        if (other.gameObject.tag == "Obstacle")
         {
-            FindObjectOfType<GameManager>().GameOver();
-        } 
+            if (!canCollideSafely) // ถ้ายังไม่มีสถานะชนได้ -> จบเกม
+            {
+                FindObjectOfType<GameManager>().GameOver();
+            }
+        }
         else if (other.gameObject.tag == "Scoring") 
         {
             FindObjectOfType<GameManager>().IncreaseScore();
         }
+        else if (other.gameObject.tag == "Shield") // เมื่อชนอาหารที่เป็นเกราะ
+        {
+            EnableSafeCollision(); // เปิดสถานะชนได้
+            Destroy(other.gameObject); // ลบอาหารออก
+        }
+        else if (other.gameObject.tag == "Magnet") // เมื่อชนไอเทม Magnet
+        {
+            ActivateMagnet(); // เปิดใช้งาน Magnet
+            Destroy(other.gameObject); // ลบไอเทม Magnet ออก
+        }
+    }
+
+    // ฟังก์ชันเปิดใช้งาน Magnet
+    private void ActivateMagnet()
+    {
+        isMagnetActive = true;
+        Invoke(nameof(DeactivateMagnet), magnetDuration); // ปิด Magnet หลังเวลาที่กำหนด
+    }
+
+    // ฟังก์ชันปิด Magnet
+    private void DeactivateMagnet()
+    {
+        isMagnetActive = false;
+    }
+
+    // ฟังก์ชันดูดไอเทม Food
+    private void AttractFoodItems()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, magnetRadius); // ตรวจจับไอเทมในรัศมี
+        foreach (Collider2D collider in colliders)
+        {
+            if (collider.CompareTag("Fish"))
+            {
+                collider.transform.position = Vector3.MoveTowards(collider.transform.position, transform.position, Time.deltaTime * 5f); // ดูดไอเทมเข้า
+            }
+            if (collider.CompareTag("Seaweed"))
+            {
+                collider.transform.position = Vector3.MoveTowards(collider.transform.position, transform.position, Time.deltaTime * 5f); // ดูดไอเทมเข้า
+            }
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // วาดรัศมี Magnet ใน Editor
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, magnetRadius);
     }
 }
