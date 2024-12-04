@@ -10,7 +10,7 @@ public class SetName : MonoBehaviour
     public TMP_InputField userInput;
     public GameObject nameSystem;
     public RankUIManager rankUIManager;
-    private GameManager gameManager;
+    [SerializeField] private GameManager gameManager;
 
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject inputName;

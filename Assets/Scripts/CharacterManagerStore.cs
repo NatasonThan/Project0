@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Purchasing;
 using System;
 using UnityEngine.Purchasing.Extension;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class CharacterManagerStore : MonoBehaviour
 {
@@ -20,14 +21,14 @@ public class CharacterManagerStore : MonoBehaviour
         {
             selectedOption = 0;
         }
-        else 
+        else
         {
             Load();
         }
         UpdateCharacter(selectedOption);
     }
 
-    public void NextOption() 
+    public void NextOption()
     {
         selectedOption++;
 
@@ -38,10 +39,10 @@ public class CharacterManagerStore : MonoBehaviour
         UpdateCharacter(selectedOption);
         Save();
     }
-    public void BackOption() 
+    public void BackOption()
     {
         selectedOption--;
-        if (selectedOption < 0) 
+        if (selectedOption < 0)
         {
             selectedOption = characterDatabase.CharacterCount - 1;
         }
@@ -49,26 +50,37 @@ public class CharacterManagerStore : MonoBehaviour
         Save();
     }
 
-    public void Load() 
+    public void Load()
     {
         selectedOption = PlayerPrefs.GetInt("selectedOption");
     }
 
-    private void Save() 
+    private void Save()
     {
         PlayerPrefs.SetInt("selectedOption", selectedOption);
     }
-    public void ChangeScene(int sceneID) 
+    public void ChangeScene(int sceneID)
     {
         SceneManager.LoadScene(sceneID);
     }
 
-    private void UpdateCharacter(int selectOption) 
+    private void UpdateCharacter(int selectOption)
     {
         SelectCharacter selectCharacter = characterDatabase.GetCharacter(selectOption, "store");
-        sprite.sprite = selectCharacter.characterSprite;
-        nameText.text = selectCharacter.characterName;
+        if (selectCharacter != null)
+        {
+            sprite.sprite = selectCharacter.characterSprite;
+            nameText.text = selectCharacter.characterName;
+        }
+        else
+        {
+            Debug.LogWarning($"Character not found for index {selectOption}. Ensure the character exists in the database.");
+
+            sprite.sprite = null;
+            nameText.text = "No More Package";
+        }
     }
+
 
     public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
     {
@@ -81,7 +93,17 @@ public class CharacterManagerStore : MonoBehaviour
         characterDatabase.RemoveCharacter(selectedOption);
         UpdateCharacter(selectedOption);
         Save();
-        Debug.Log("Buy index "+selectedOption);
+        int score = PlayerPrefs.GetInt("HighestScore", 0);
+        score += 50;
+        PlayerPrefs.SetInt("HighestScore", score);
+        PlayerPrefs.Save();
+        Debug.Log("Buy index " + selectedOption);
         Debug.Log(product.definition.id);
+
+        if (product == null)
+        {
+            Debug.LogError("Product is null. Purchase might have failed.");
+            return;
+        }
     }
 }

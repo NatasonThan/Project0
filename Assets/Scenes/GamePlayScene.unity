@@ -1416,6 +1416,7 @@ MonoBehaviour:
   userInput: {fileID: 1834842489}
   nameSystem: {fileID: 1755943089}
   rankUIManager: {fileID: 330344746}
+  gameManager: {fileID: 149568774}
   playButton: {fileID: 892178073}
   inputName: {fileID: 1206752737}
   yesButton: {fileID: 976806818}

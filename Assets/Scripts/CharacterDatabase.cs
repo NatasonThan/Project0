@@ -26,18 +26,24 @@ public class CharacterDatabase : ScriptableObject
         get { return characters.Count; } 
     }
 
-    public SelectCharacter GetCharacter(int index , string type)
+    public SelectCharacter GetCharacter(int index, string type)
     {
-        if (index < 0 || index >= characters.Count)
-        {
-            throw new System.IndexOutOfRangeException("Index is out of range.");
-        }
         if (type == "store")
         {
+            if (index < 0 || index >= characters.Count)
+            {
+                Debug.LogWarning($"Invalid index {index} for 'store'. Valid range: 0 to {characters.Count - 1}. Returning null.");
+                return null;
+            }
             return characters[index];
         }
         else
         {
+            if (index < 0 || index >= owned.Count)
+            {
+                Debug.LogWarning($"Invalid index {index} for 'owned'. Valid range: 0 to {owned.Count - 1}. Returning null.");
+                return null;
+            }
             return owned[index];
         }
     }
@@ -51,11 +57,11 @@ public class CharacterDatabase : ScriptableObject
     {
         if (index < 0 || index >= characters.Count)
         {
+            Debug.LogError($"RemoveCharacter failed: index {index} is out of range.");
             throw new System.IndexOutOfRangeException("Index is out of range.");
         }
+
         AddCharacter(GetCharacter(index, "store"));
         characters.RemoveAt(index);
-
     }
-
 }

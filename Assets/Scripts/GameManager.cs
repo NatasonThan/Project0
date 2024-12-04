@@ -174,7 +174,12 @@ public class GameManager : MonoBehaviour
     public void ResetScore()
     {
         highestScore = 0;
+        PlayerPrefs.SetInt("HighestScore", highestScore);
+        PlayerPrefs.Save();
         scoreTime = 0;
+        PlayerPrefs.SetFloat("DataTime", scoreTime);
+        PlayerPrefs.Save();
+        Debug.Log("Reseto");
     }
     public void Continue() 
     {
