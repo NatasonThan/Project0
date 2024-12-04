@@ -8,3 +8,9 @@ public class SelectCharacter
     public string characterName;
     public Sprite characterSprite;
 }
+
+public class OwnedCharacter
+{
+    public string characterName;
+    public Sprite characterSprite;
+}

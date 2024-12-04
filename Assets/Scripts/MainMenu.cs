@@ -13,6 +13,10 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("Characters");
     }
+    public void Store()
+    {
+        SceneManager.LoadScene("Store");
+    }
     public void Quit()
     {
         Application.Quit();

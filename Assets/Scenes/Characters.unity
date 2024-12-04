@@ -420,7 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6d07fa1f2d6ae348b1b865eb061aa86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterDatabase: {fileID: 11400000, guid: d069d0ee69a431a45910c8ce3f02eff8, type: 2}
+  characterDatabase: {fileID: 11400000, guid: 4795a2ed4d390504a80b63ce5fbc4f69, type: 2}
   nameText: {fileID: 833946772}
   sprite: {fileID: 608778009}
 --- !u!212 &608778009

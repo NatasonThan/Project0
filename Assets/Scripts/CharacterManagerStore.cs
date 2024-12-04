@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.Purchasing;
+using System;
+using UnityEngine.Purchasing.Extension;
 
-public class CharacterManager : MonoBehaviour
+public class CharacterManagerStore : MonoBehaviour
 {
-
     public CharacterDatabase characterDatabase;
     public TextMeshProUGUI nameText;
     public SpriteRenderer sprite;
     private int selectedOption = 0;
-
 
     void Start()
     {
@@ -64,8 +65,23 @@ public class CharacterManager : MonoBehaviour
 
     private void UpdateCharacter(int selectOption) 
     {
-        SelectCharacter selectCharacter = characterDatabase.GetCharacter(selectOption, "owned");
+        SelectCharacter selectCharacter = characterDatabase.GetCharacter(selectOption, "store");
         sprite.sprite = selectCharacter.characterSprite;
         nameText.text = selectCharacter.characterName;
+    }
+
+    public void OnPurchaseFailed(Product product, PurchaseFailureDescription failureDescription)
+    {
+        Debug.Log(product.definition.id);
+        Debug.Log(failureDescription.reason);
+    }
+
+    public void OnPurchaseCharacterComplete(Product product)
+    {
+        characterDatabase.RemoveCharacter(selectedOption);
+        UpdateCharacter(selectedOption);
+        Save();
+        Debug.Log("Buy index "+selectedOption);
+        Debug.Log(product.definition.id);
     }
 }
