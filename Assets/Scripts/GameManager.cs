@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     public GameObject gameOver;
     public GameObject gamePaused;
     public GameObject reviveButton;
-    public GameObject nameSystem;
+    public GameObject screenShotButton;
+    public GameObject adsRivive;
     public TextMeshProUGUI requiredText;
 
     private Timer timer;
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int scoreTime;
     private int deathTime = 0;
     private int reviveScore = 0;
+    public bool isAdsRivive = false; 
 
     public FireBaseRankingManager fireBaseRankingManager;
 
@@ -41,15 +43,14 @@ public class GameManager : MonoBehaviour
         playButton.SetActive(false);
         gameOver.SetActive(false);
         reviveButton.SetActive(false);
+        screenShotButton.SetActive(false);
+        adsRivive.SetActive(false);
         timer.ResetTimer();
+        isAdsRivive = false;
 
         deathTime = 0;
 
-        Time.timeScale = 1f;
-        foreach (Player p in player) 
-        {
-            p.enabled = true;
-        }
+        Continue();
 
         Velocity[] pipes = FindObjectsOfType<Velocity>();
 
@@ -65,10 +66,13 @@ public class GameManager : MonoBehaviour
         gameOver.SetActive(true);
         gamePaused.SetActive(false);
         reviveButton.SetActive(true);
+        screenShotButton.SetActive(true);
+        adsRivive.SetActive(true);
+        isAdsRivive = false;
         deathTime++;
 
         reviveScore = deathTime * 10;
-        requiredText.text = $"Need Score {reviveScore} to Revive";
+        requiredText.text = $"Need Score {reviveScore} to Revive\n If you use Ads Revive, you'll still lose points anyway";
         Debug.Log($"You Need Score: {reviveScore}");
 
         if (score > highestScore)
@@ -142,13 +146,9 @@ public class GameManager : MonoBehaviour
 
     public void Revive()
     {
-        if (score >= reviveScore)
+        if (score >= reviveScore || isAdsRivive)
         {
-            Time.timeScale = 1f;
-            foreach (Player p in player)
-            {
-                p.enabled = true;
-            }
+            Continue();
             score -= reviveScore;
             scoreText.text = score.ToString();
 
@@ -156,6 +156,8 @@ public class GameManager : MonoBehaviour
             gameOver.SetActive(false);
             reviveButton.SetActive(false);
             gamePaused.SetActive(true);
+            screenShotButton.SetActive(false);
+            adsRivive.SetActive(false);
 
             Velocity[] pipes = FindObjectsOfType<Velocity>();
 
@@ -167,7 +169,19 @@ public class GameManager : MonoBehaviour
         else
         {
             requiredText.text = $"Your Score Is Not Enough";
-            Debug.Log("Your Score Is Not Enough");
+        }
+    }
+    public void ResetScore()
+    {
+        highestScore = 0;
+        scoreTime = 0;
+    }
+    public void Continue() 
+    {
+        Time.timeScale = 1f;
+        foreach (Player p in player)
+        {
+            p.enabled = true;
         }
     }
 }

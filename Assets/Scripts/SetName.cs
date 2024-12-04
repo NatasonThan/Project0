@@ -9,8 +9,8 @@ public class SetName : MonoBehaviour
     public TMP_Text headText;
     public TMP_InputField userInput;
     public GameObject nameSystem;
-    public RankData rankData;
     public RankUIManager rankUIManager;
+    private GameManager gameManager;
 
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject inputName;
@@ -59,10 +59,9 @@ public class SetName : MonoBehaviour
     {
         PlayerPrefs.SetString("PlayerName", userInput.text);
         PlayerPrefs.Save();
-
         nameSystem.SetActive(false);
-
         rankUIManager.SetPlayerName(userInput.text);
+        gameManager.ResetScore();
     }
 
     public void InputNo()

@@ -13,7 +13,6 @@ public class RankSortController : MonoBehaviour
     {
         sortByScoreButton.SetActive(false);
         sortByTimeButton.SetActive(true);
-        fireBaseRankingManager.CalculateRankFromScore();
         fireBaseRankingManager.SetLocalDataToDatabase();
         rankUIManager.ClearRankData();
         rankUIManager.BubbleSortScoreRankData();
@@ -24,7 +23,6 @@ public class RankSortController : MonoBehaviour
     {
         sortByScoreButton.SetActive(true);
         sortByTimeButton.SetActive(false);
-        fireBaseRankingManager.CalculateRankFromTime();
         fireBaseRankingManager.SetLocalDataToDatabase();
         rankUIManager.ClearRankData();
         rankUIManager.BubbleSortTimeRankData();

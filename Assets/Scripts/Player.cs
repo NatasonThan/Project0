@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     public Sprite[] sprites;
     private int spriteIndex;
 
-    private float strength = 5f;
+    private float strength = 4f;
     private float gravity = -15f;
     private Vector3 direction;
 
