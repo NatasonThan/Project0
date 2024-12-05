@@ -12,6 +12,7 @@ TagManager:
   - Magnet
   - Bomb
   - Ground
+  - Audio
   layers:
   - Default
   - TransparentFX

@@ -25,8 +25,14 @@ public class Player : MonoBehaviour
     public float magnetDuration = 5f; // ระยะเวลา Magnet ทำงาน
     private bool isMagnetActive = false; // สถานะ Magnet
 
+    public AudioManager audioManager;
+
+    private float lastPlayTime = 0f;
+    private float playInterval = 0.2f; // ช่วงเวลาที่ต้องรอระหว่างการเล่นเสียง
+
     private void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         originalColor = spriteRenderer.color;
     }
@@ -56,6 +62,11 @@ public class Player : MonoBehaviour
         if (isHoldingKey && !isTouchingUI)
         {
             direction = Vector3.up * strength;
+            if (Time.time - lastPlayTime >= playInterval)
+            {
+                audioManager.PlaySFX(audioManager.bubble);
+                lastPlayTime = Time.time;
+            }
         }
         else 
         {
@@ -126,6 +137,7 @@ public class Player : MonoBehaviour
             if (!canCollideSafely) // ถ้ายังไม่มีสถานะชนได้ -> จบเกม
             {
                 FindObjectOfType<GameManager>().GameOver();
+                audioManager.PlaySFX(audioManager.hit);
             }
         }
         else if (other.gameObject.tag == "Scoring") 
@@ -134,11 +146,13 @@ public class Player : MonoBehaviour
         }
         else if (other.gameObject.tag == "Shield") // เมื่อชนอาหารที่เป็นเกราะ
         {
+            audioManager.PlaySFX(audioManager.pickItem);
             EnableSafeCollision(); // เปิดสถานะชนได้
             Destroy(other.gameObject); // ลบ item เกราะ ออก
         }
         else if (other.gameObject.tag == "Magnet") // เมื่อชนไอเทม Magnet
         {
+            audioManager.PlaySFX(audioManager.pickItem);
             ActivateMagnet(); // เปิดใช้งาน Magnet
             Destroy(other.gameObject); // ลบไอเทม Magnet ออก
         }
@@ -157,6 +171,7 @@ public class Player : MonoBehaviour
             if (!canCollideSafely)
             {
                 gameManager.RemoveScore(5);
+                audioManager.PlaySFX(audioManager.hit);
                 Destroy(other.gameObject);
             }
         }

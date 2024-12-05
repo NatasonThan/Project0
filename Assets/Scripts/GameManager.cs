@@ -25,9 +25,12 @@ public class GameManager : MonoBehaviour
     public bool isAdsRivive = false;
 
     public FireBaseRankingManager fireBaseRankingManager;
+    AudioManager audioManager;
 
     private void Awake()
     {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+
         timer = FindObjectOfType<Timer>();
         Application.targetFrameRate = 60;
 
@@ -38,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     public void Play()
     {
+        audioManager.PlayBG();
         score = 0;
         scoreText.text = score.ToString();
 
@@ -64,6 +68,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        audioManager.PlaySFX(audioManager.gameOver);
+        audioManager.PauseBG();
         playButton.SetActive(true);
         gameOver.SetActive(true);
         gamePaused.SetActive(false);
@@ -126,6 +132,7 @@ public class GameManager : MonoBehaviour
         {
             p.enabled = false;
         }
+        audioManager.PauseBG();
     }
 
     public void IncreaseScore()
@@ -138,6 +145,7 @@ public class GameManager : MonoBehaviour
     {
         score += amount;
         scoreText.text = score.ToString();
+        audioManager.PlaySFX(audioManager.eat);
     }
 
     public void RemoveScore(int amount)
@@ -190,5 +198,6 @@ public class GameManager : MonoBehaviour
         {
             p.enabled = true;
         }
+        audioManager.PlayBG();
     }
 }
