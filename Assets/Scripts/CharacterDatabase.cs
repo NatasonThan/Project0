@@ -53,15 +53,4 @@ public class CharacterDatabase : ScriptableObject
         owned.Add(newCharacter);
     }
 
-    public void RemoveCharacter(int index)
-    {
-        if (index < 0 || index >= characters.Count)
-        {
-            Debug.LogError($"RemoveCharacter failed: index {index} is out of range.");
-            throw new System.IndexOutOfRangeException("Index is out of range.");
-        }
-
-        AddCharacter(GetCharacter(index, "store"));
-        characters.RemoveAt(index);
-    }
 }

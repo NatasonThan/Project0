@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
-using UnityEditor.SearchService;
 
 public class CharacterManager : MonoBehaviour
 {

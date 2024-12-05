@@ -31,16 +31,16 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
         // Note that if the ad content wasn't previously loaded, this method will fail
         Debug.Log("Showing Ad: " + _adUnitId);
         Advertisement.Show(_adUnitId, this);
-        gameManager.isAdsRivive = true;
-        gameManager.Revive();
-        gameManager.Pause();
-        continueButton.SetActive(true);
     }
 
     // Implement Load Listener and Show Listener interface methods: 
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
         // Optionally execute code if the Ad Unit successfully loads content.
+        gameManager.isAdsRivive = true;
+        gameManager.Revive();
+        gameManager.Pause();
+        continueButton.SetActive(true);
     }
 
     public void OnUnityAdsFailedToLoad(string _adUnitId, UnityAdsLoadError error, string message)
@@ -61,9 +61,9 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
     }
     public void OnUnityAdsShowComplete(string _adUnitId, UnityAdsShowCompletionState showCompletionState) 
     {
-        /*
         gameManager.isAdsRivive = true;
         gameManager.Revive();
-        gameManager.Pause();*/
+        gameManager.Pause();
+        continueButton.SetActive(true);
     }
 }

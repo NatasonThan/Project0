@@ -90,7 +90,6 @@ public class CharacterManagerStore : MonoBehaviour
 
     public void OnPurchaseCharacterComplete(Product product)
     {
-        characterDatabase.RemoveCharacter(selectedOption);
         UpdateCharacter(selectedOption);
         Save();
         int score = PlayerPrefs.GetInt("HighestScore", 0);

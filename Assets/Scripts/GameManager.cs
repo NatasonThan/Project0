@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int scoreTime;
     private int deathTime = 0;
     private int reviveScore = 0;
-    public bool isAdsRivive = false; 
+    public bool isAdsRivive = false;
 
     public FireBaseRankingManager fireBaseRankingManager;
 
@@ -111,9 +111,9 @@ public class GameManager : MonoBehaviour
             Debug.LogError("FireBaseRankingManager is not set in the GameManager");
         }
     }
-    public void FindYourRank() 
+    public void FindYourRank()
     {
-        Debug.Log($"DataTime: {scoreTime}");                                                                         
+        Debug.Log($"DataTime: {scoreTime}");
         string playerName = PlayerPrefs.GetString("PlayerName", "Guest");
         PlayerData newPlayerData = new PlayerData(0, playerName, highestScore, scoreTime);
         fireBaseRankingManager.currentPlayerData = newPlayerData;
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
         Debug.Log("Reseto");
     }
-    public void Continue() 
+    public void Continue()
     {
         Time.timeScale = 1f;
         foreach (Player p in player)
