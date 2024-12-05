@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject reviveButton;
     public GameObject screenShotButton;
     public GameObject adsRivive;
+    public GameObject capturePanel;
     public TextMeshProUGUI requiredText;
 
     private Timer timer;
@@ -46,6 +47,7 @@ public class GameManager : MonoBehaviour
         screenShotButton.SetActive(false);
         adsRivive.SetActive(false);
         timer.ResetTimer();
+        capturePanel.SetActive(false);
         isAdsRivive = false;
 
         deathTime = 0;

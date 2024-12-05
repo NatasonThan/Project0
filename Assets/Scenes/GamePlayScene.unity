@@ -992,6 +992,7 @@ MonoBehaviour:
   reviveButton: {fileID: 1318080512}
   screenShotButton: {fileID: 1130142700}
   adsRivive: {fileID: 1648187146}
+  capturePanel: {fileID: 830252980}
   requiredText: {fileID: 950399285}
   score: 0
   highestScore: 0
@@ -2830,12 +2831,12 @@ RectTransform:
   - {fileID: 1494801532}
   - {fileID: 238519625}
   - {fileID: 1318080513}
+  - {fileID: 1648187147}
   - {fileID: 1439108818}
   - {fileID: 1755943090}
   - {fileID: 1130142704}
   - {fileID: 830252981}
   - {fileID: 1218480961}
-  - {fileID: 1648187147}
   - {fileID: 371009904}
   m_Father: {fileID: 1256735116}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

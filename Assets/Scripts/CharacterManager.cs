@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEditor.SearchService;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -130,5 +131,8 @@ public class CharacterManager : MonoBehaviour
         sprite.sprite = selectCharacter.characterSprite;
         nameText.text = selectCharacter.characterName;
     }
-
+    public void Back()
+    {
+        SceneManager.LoadScene(0);
+    }
 }

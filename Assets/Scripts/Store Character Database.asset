@@ -15,4 +15,6 @@ MonoBehaviour:
   characters:
   - characterName: Pack Characters + 50 Score
     characterSprite: {fileID: 21300000, guid: 14a573b42af6a38428fa3113bb5a565e, type: 3}
-  owned: []
+  owned:
+  - characterName: Pack Characters + 50 Score
+    characterSprite: {fileID: 21300000, guid: 14a573b42af6a38428fa3113bb5a565e, type: 3}
