@@ -37,10 +37,10 @@ public class InterstitialAdExample : MonoBehaviour, IUnityAdsLoadListener, IUnit
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
         // Optionally execute code if the Ad Unit successfully loads content.
-        gameManager.isAdsRivive = true;
+        /*gameManager.isAdsRivive = true;
         gameManager.Revive();
         gameManager.Pause();
-        continueButton.SetActive(true);
+        continueButton.SetActive(true);*/
     }
 
     public void OnUnityAdsFailedToLoad(string _adUnitId, UnityAdsLoadError error, string message)
